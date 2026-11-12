@@ -24,11 +24,17 @@ Open-Meteo API --> AWS Lambda (Python) --> S3 raw/ (JSON) --> S3 clean/ (Parquet
 - [x] S3 bucket with a `raw/weather/` prefix (region: ap-southeast-2, Sydney)
 - [x] Athena external table over the raw CSV and first SQL queries (see `sql/`)
 - [x] Python script that fetches the weather data (`lambda/fetch_weather.py`, run locally for now)
-- [ ] Run the fetch as a Lambda function that writes to `raw/`
+- [x] Lambda function (`lambda/lambda_function.py`) that fetches one day of data and writes a dated CSV to `raw/weather/`; Athena reads the new file with no table changes
 - [ ] Convert raw JSON to Parquet in `clean/`
 - [ ] EventBridge daily schedule
 - [ ] CloudWatch logging and error alerts
 - [ ] Screenshots and example queries in this README
+
+## Known limitations and next improvements
+
+- The Lambda currently runs with a broad managed role (`PowerUserRole`). Next step: a least-privilege role allowing only `s3:PutObject` on `raw/*`.
+- The function is triggered manually. Next step: an EventBridge daily schedule.
+- Data is stored as CSV. Next step: convert to Parquet in `clean/`.
 
 ## Planned SQL (Athena)
 
