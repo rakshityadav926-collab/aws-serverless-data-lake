@@ -20,10 +20,11 @@ Open-Meteo API --> AWS Lambda (Python) --> S3 raw/ (JSON) --> S3 clean/ (Parquet
 
 ## Plan and status
 
-- [ ] AWS account safety: MFA, IAM user, billing alert
-- [ ] S3 bucket with `raw/` and `clean/` prefixes
-- [ ] Athena table over the raw data and first SQL queries
-- [ ] Lambda function that fetches data and writes JSON to `raw/`
+- [x] AWS account safety: MFA on the sign-in, zero-spend budget alert
+- [x] S3 bucket with a `raw/weather/` prefix (region: ap-southeast-2, Sydney)
+- [x] Athena external table over the raw CSV and first SQL queries (see `sql/`)
+- [x] Python script that fetches the weather data (`lambda/fetch_weather.py`, run locally for now)
+- [ ] Run the fetch as a Lambda function that writes to `raw/`
 - [ ] Convert raw JSON to Parquet in `clean/`
 - [ ] EventBridge daily schedule
 - [ ] CloudWatch logging and error alerts
@@ -31,8 +32,13 @@ Open-Meteo API --> AWS Lambda (Python) --> S3 raw/ (JSON) --> S3 clean/ (Parquet
 
 ## Planned SQL (Athena)
 
-- Average temperature by city and month
+Done (see `sql/02_queries.sql`):
+
+- Average maximum temperature and total rainfall per city
 - Hottest day per city using `ROW_NUMBER()`
+
+Planned:
+
 - Rolling 7-day average rainfall using window functions
 
 ## Project structure
